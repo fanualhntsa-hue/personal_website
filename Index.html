@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fanual Hntsa — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1420;
+    --bg-raised:#161D2E;
+    --line:#26304A;
+    --text:#E8ECF4;
+    --text-dim:#8B96B3;
+    --accent:#E8A33D;
+    --accent-dim:#7A5B23;
+    --green:#5FCF8C;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+
+  /* Smooth reveal animation styles */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+  }
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--accent); color:var(--bg);}
+
+  a{color:inherit; text-decoration: none;}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(15,20,32,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    font-family:var(--mono); font-weight:700; font-size:15px;
+    color:var(--accent);
+  }
+  .logo span{color:var(--text-dim);}
+  nav ul{list-style:none; display:flex; gap:28px;}
+  nav a{
+    font-family:var(--mono); font-size:13px;
+    color:var(--text-dim); transition:color .2s;
+  }
+  nav a:hover{color:var(--accent);}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    padding:96px 0 64px;
+    position:relative;
+  }
+  .terminal{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:#121729;
+  }
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.red{background:#E5645A;}
+  .dot.yellow{background:#E8B94D;}
+  .dot.green{background:#5FCF8C;}
+  .terminal-title{
+    font-family:var(--mono); font-size:12px; color:var(--text-dim);
+    margin-left:8px;
+  }
+  .terminal-body{
+    padding:32px;
+    font-family:var(--mono);
+    font-size:14px;
+  }
+  .terminal-body .prompt{color:var(--green);}
+  .terminal-body .cmd{color:var(--text-dim);}
+  .terminal-body .out{color:var(--text); margin:6px 0 20px; padding-left:0;}
+  
+  /* Cursor Animation */
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: var(--accent);
+    margin-left: 4px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 0%, 100% {opacity: 1;} 50% {opacity: 0;} }
+
+  h1{
+    font-family:var(--mono);
+    font-size:clamp(32px, 6vw, 52px);
+    font-weight:800;
+    letter-spacing:-0.02em;
+    line-height:1.15;
+    margin:4px 0 10px;
+  }
+  h1 .highlight{color:var(--accent);}
+  .role{
+    font-size:17px; color:var(--text-dim); margin-bottom:22px;
+    font-family:var(--sans);
+  }
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:28px;}
+  .tag{
+    font-family:var(--mono); font-size:12px;
+    border:1px solid var(--line); color:var(--text-dim);
+    padding:5px 10px; border-radius:5px;
+  }
+  .btn-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:500;
+    padding:12px 20px; border-radius:6px;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s, box-shadow .15s, background .15s;
+    cursor: pointer;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--accent); color:#1A1300; border:none;}
+  .btn-primary:hover{box-shadow:0 8px 24px -8px rgba(232,163,61,0.6);}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:80px 0;}
+  .section-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin-bottom:40px;
+  }
+  .section-tag{
+    font-family:var(--mono); font-size:13px; color:var(--accent);
+  }
+  .section-head h2{
+    font-family:var(--mono); font-size:22px; font-weight:700;
+  }
+  .section-line{flex:1; height:1px; background:var(--line);}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px;
+  }
+  .about-grid p{color:var(--text-dim); margin-bottom:18px; font-size:16px;}
+  .about-grid strong{color:var(--accent); font-weight:600;}
+  .facts{
+    font-family:var(--mono); font-size:13px;
+    border-left:2px solid var(--accent-dim);
+    padding-left:18px;
+  }
+  .facts div{margin-bottom:16px; color:var(--text-dim);}
+  .facts div b{display:block; color:var(--text); font-size:14px; margin-bottom:4px; text-transform: uppercase; letter-spacing: 1px;}
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:20px;
+  }
+  .skill-card{
+    background:var(--bg-raised); border:1px solid var(--line);
+    border-radius:8px; padding:24px;
+    transition: transform 0.3s ease;
+  }
+  .skill-card:hover { border-color: var(--accent-dim); transform: translateY(-5px); }
+  .skill-card .n{
+    font-family:var(--mono); color:var(--accent); font-size:12px; margin-bottom:12px;
+  }
+  .skill-card h3{font-size:16px; margin-bottom:14px;}
+  .skill-card ul{list-style:none; font-size:14px; color:var(--text-dim);}
+  .skill-card li{margin-bottom:8px; display: flex; align-items: center; gap: 8px;}
+  .skill-card li::before{content:""; display:inline-block; width:4px; height:4px; background:var(--accent-dim); border-radius:50%;}
+
+  /* ---------- PROJECTS ---------- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .project-card{
+    background:var(--bg-raised); border:1px solid var(--line);
+    border-radius:8px; padding:24px;
+    display:flex; flex-direction: column; justify-content:space-between;
+    transition: all .2s ease;
+  }
+  .project-card:hover{border-color:var(--accent); transform: scale(1.02);}
+  
+  .project-card h3{font-size:18px; margin-bottom:10px; color: var(--text);}
+  .project-card p{color:var(--text-dim); font-size:14px; margin-bottom: 20px; flex-grow: 1;}
+  .project-tech{display: flex; gap: 10px; flex-wrap: wrap;}
+  .tech-tag{font-family: var(--mono); font-size: 11px; color: var(--accent); background: rgba(232, 163, 61, 0.1); padding: 2px 8px; border-radius: 4px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact-box{
+    background:var(--bg-raised); border:1px solid var(--line);
+    border-radius:10px; padding:60px 40px; text-align:center;
+    background-image: radial-gradient(circle at top right, rgba(232, 163, 61, 0.05), transparent);
+  }
+  .contact-box h2{font-family:var(--mono); font-size:28px; margin-bottom:15px;}
+  .contact-box p{color:var(--text-dim); margin-bottom:32px; font-size:16px; max-width: 500px; margin-left: auto; margin-right: auto;}
+  .contact-links{display:flex; justify-content:center; gap:16px; flex-wrap:wrap;}
+
+  footer{
+    text-align:center; padding:48px 24px;
+    font-family:var(--mono); font-size:12px; color:var(--text-dim);
+    border-top:1px solid var(--line);
+  }
+  footer .accent{color:var(--accent);}
+
+  @media(max-width:720px){
+    .about-grid{grid-template-columns:1fr;}
+    header.hero{padding:60px 0 40px;}
+    .terminal-body{padding: 20px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">fanual<span>.dev</span></div>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="terminal-title">fanu@portfolio — whoami</div>
+      </div>
+      <div class="terminal-body">
+        <span class="prompt">$</span> <span class="cmd">whoami</span>
+        <h1>Fanu Hntsa<br><span class="highlight">Web Developer</span></h1>
+        <p class="role">CS Graduate · Building modern web experiences<span class="cursor"></span></p>
+        <div class="tag-row">
+          <span class="tag">HTML / CSS / JS</span>
+          <span class="tag">React & Modern Web</span>
+          <span class="tag">AI Fundamentals</span>
+          <span class="tag">Addis Ababa, ET</span>
+        </div>
+        <div class="btn-row">
+          <a href="#projects" class="btn btn-primary">View My Work →</a>
+          <a href="https://github.com/fanualhntsa-hue" target="_blank" class="btn btn-ghost">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>about</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p><strong>I'm a Computer Science graduate</strong> based in Addis Ababa. I recently finished my degree at Adigrat University and I'm currently focused on turning complex problems into elegant, accessible web applications.</p>
+        <p>My journey into coding started with a curiosity about how the internet works, which evolved into a passion for <strong>frontend development</strong> and AI integration.</p>
+        <p>Currently, I am building personal projects to sharpen my skills in React, Tailwind CSS, and Node.js. I'm actively looking for a <strong>remote junior role</strong> where I can contribute to a team and grow as an engineer.</p>
+      </div>
+      <div class="facts">
+        <div><b>Education</b>BSc Computer Science, Adigrat University</div>
+        <div><b>Experience</b>Junior Web Development & Software Engineering</div>
+        <div><b>Status</b>Open to remote opportunities</div>
+        <div><b>Based in</b>Addis Ababa, Ethiopia</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">02</span>
+      <h2>skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="n">FRONTEND</div>
+        <h3>Interface Design</h3>
+        <ul>
+          <li>HTML5 & Semantic Markup</li>
+          <li>CSS3 (Flexbox, Grid, Animations)</li>
+          <li>JavaScript (ES6+)</li>
+          <li>Responsive Web Design</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="n">FOUNDATIONS</div>
+        <h3>Core Engineering</h3>
+        <ul>
+          <li>Data Structures & Algorithms</li>
+          <li>Version Control (Git/GitHub)</li>
+          <li>Software Design Patterns</li>
+          <li>API Integration</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="n">EXPLORING</div>
+        <h3>Current Learning</h3>
+        <ul>
+          <li>React.js & Next.js</li>
+          <li>AI Prompt Engineering</li>
+          <li>Tailwind CSS</li>
+          <li>Node.js Fundamentals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">03</span>
+      <h2>projects</h2>
+      <div class="section-line"></div>
+    </div>
+    
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="project-card">
+        <div>
+          <h3>Personal Portfolio</h3>
+          <p>The site you are currently viewing. Built with a focus on clean code, performance, and a terminal-inspired developer aesthetic.</p>
+        </div>
+        <div class="project-tech">
+          <span class="tech-tag">HTML</span>
+          <span class="tech-tag">CSS</span>
+          <span class="tech-tag">JavaScript</span>
+        </div>
+      </div>
+
+      <!-- Project 2 (Example Placeholder) -->
+      <div class="project-card">
+        <div>
+          <h3>Task Management App</h3>
+          <p>A productivity tool currently in development. Features include task categorization, local storage persistence, and a dark-mode UI.</p>
+        </div>
+        <div class="project-tech">
+          <span class="tech-tag">JavaScript</span>
+          <span class="tech-tag">LocalStorage</span>
+          <span class="tech-tag">CSS Grid</span>
+        </div>
+      </div>
+
+      <!-- Project 3 (Example Placeholder) -->
+      <div class="project-card">
+        <div>
+          <h3>University Capstone</h3>
+          <p>Final year project focusing on software engineering principles and database management systems.</p>
+        </div>
+        <div class="project-tech">
+          <span class="tech-tag">Software Eng</span>
+          <span class="tech-tag">Documentation</span>
+          <span class="tech-tag">SQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="reveal">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Let's build something together</h2>
+      <p>I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open!</p>
+      <div class="contact-links">
+        <a href="mailto:fanualhntsa@gmail.com" class="btn btn-primary">Send an Email</a>
+        <a href="https://github.com/fanualhntsa-hue" target="_blank" class="btn btn-ghost">GitHub</a>
+        <a href="https://www.linkedin.com/in/fanual-hntsa-9b0173314" target="_blank" class="btn btn-ghost">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Designed & Built by Fanual Hntsa · <span class="accent">2025</span>
+</footer>
+
+<script>
+  // Simple Scroll Reveal Script
+  function reveal() {
+    var reveals = document.querySelectorAll(".reveal");
+    for (var i = 0; i < reveals.length; i++) {
+      var windowHeight = window.innerHeight;
+      var elementTop = reveals[i].getBoundingClientRect().top;
+      var elementVisible = 150;
+      if (elementTop < windowHeight - elementVisible) {
+        reveals[i].classList.add("active");
+      }
+    }
+  }
+
+  window.addEventListener("scroll", reveal);
+  // Trigger once on load
+  reveal();
+</script>
+
+</body>
+</html>
